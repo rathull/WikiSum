@@ -5,7 +5,7 @@ import re
 # from regex import isURL, isWikipedia
 
 PREFIX = '!'
-# TOKEN = os.environ.get('DISCORD_TOKEN')
+TOKEN = os.environ.get('DISCORD_TOKEN')
 
 client = discord.Client()
 isURL = re.compile(
