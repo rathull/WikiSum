@@ -5,7 +5,10 @@ import re
 # from regex import isURL, isWikipedia
 
 PREFIX = '!'
-TOKEN = os.environ.get('DISCORD_TOKEN')
+# TOKEN = os.environ.get('DISCORD_TOKEN')
+
+TOKEN = 'ODIzNjM1OTg5MTQ1NzE0NzI4.YFjsyg.Qh2r9G8JKYJsxq6bb6z79QPEL-Q'
+
 client = discord.Client()
 isURL = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
