@@ -5,29 +5,6 @@ import nltk
 import heapq as hq
 import sys
 
-# try:
-#     n = int(input('How thorough do you want your summary (1-20): ')) - 1
-# except:
-#     print("Enter a number.")
-#     sys.exit()
-
-
-# if 'W' in str(input('Do you want a wikipedia article (W) or general text (T): ')).upper():
-#     parsed = bs.BeautifulSoup(
-#         urllib.request.urlopen(
-#             str(
-#                 input('Link: ')
-#             )
-#         ).read(),
-#         'lxml'
-#     )
-# else:
-#     parsed = str(
-#         input(
-#             'Text: '
-#         )
-#     )
-
 def summary(n, url):
     n = max(0, n - 1)
     parsed = bs.BeautifulSoup(
@@ -95,7 +72,7 @@ def summary(n, url):
 # )
 
 def summaryWithoutFirst(n, url):
-    n = max(0, n - 1)
+    n = max(0, n)
     parsed = bs.BeautifulSoup(
         urllib.request.urlopen(
             str(
@@ -151,4 +128,4 @@ def summaryWithoutFirst(n, url):
     
     
     summary_list = hq.nlargest(n, sent_scores, key=sent_scores.get)
-    return str(first + ' ' + ' '.join(summary_list))
+    return str(' '.join(summary_list))

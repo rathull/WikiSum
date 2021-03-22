@@ -1,6 +1,17 @@
 # Don't track these folders
 __pycache__/
 .vscode/
+test.py
 
 # Environment Variables
 .env
+
+# Extras
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
