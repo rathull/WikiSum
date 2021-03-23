@@ -43,6 +43,7 @@ def summaryWikipedia(n, url):
         sentences = nltk.sent_tokenize(article_text)
     except:
         nltk.download('punkt')
+        sentences = nltk.sent_tokenize(article_text)
 
     first = nltk.sent_tokenize(article_text)[0]
 
