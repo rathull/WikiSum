@@ -5,6 +5,7 @@ test.py
 
 # Environment Variables
 .env
+env/
 
 # Extras
 *.7z

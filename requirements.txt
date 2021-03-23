@@ -1,2 +1,5 @@
 discord==1.0.1
 discord.py==1.6.0
+bs4==0.0.1
+nltk==3.5
+lxml==4.6.3

@@ -1,11 +1,12 @@
 import os
 import discord
-from summary import summary, summaryWithoutFirst
+from summary import summary, summaryWithoutFirst, summaryWikipedia
 import re
 # from regex import isURL, isWikipedia
 
 PREFIX = '!'
-TOKEN = os.environ.get('DISCORD_TOKEN')
+# TOKEN = os.environ.get('DISCORD_TOKEN')
+TOKEN = 'ODIzNjM1OTg5MTQ1NzE0NzI4.YFjsyg.0Wbsr8MCegRQlilVCnXxRj5y7eY'
 
 client = discord.Client()
 isURL = re.compile(
@@ -32,11 +33,16 @@ async def on_message(message):
     try:
         if message.author == client.user:
             return
-        if message.content.startswith(f'{PREFIX}help'):  # !help
-            await message.channel.send('Commands:')
-            await message.channel.send('Get a summary: !wiki {thoroughness (1-20)} {WikiPedia url}')
-            if message.content.startswith(f'{PREFIX}help wiki'):
-                await message.channel.send('Usage: !wiki {thoroughness (1-20)} {WikiPedia url}')
+        if message.content.startswith(f'{PREFIX}help') or message.content.startswith(f'{PREFIX}commands'):  # !help
+            if (message.content == '!help' and len(message.content)==5)or ('!commands' and len(message.content)==9):
+                await message.channel.send('Commands:\n' + 
+                    'Article summary: !wiki {thoroughness (1-10)} {WikiPedia url}\n' + 
+                    'Text summary: !text {thoroughness (1-10)} {Your text here}'
+                )
+            if 'wiki' in message.content:
+                await message.channel.send('Usage: !wiki {thoroughness (1-10)} {WikiPedia url}')
+            if 'text' in message.content:
+                await message.channel.send('Usage: !text {thoroughness (1-10)} {Your text here}')
 
         if message.content.startswith(f'{PREFIX}wiki'):  # !wiki
             q = message.content.split(' ')[1:]  # Query split into a number and url
@@ -45,15 +51,16 @@ async def on_message(message):
             valid = True;
             # Checking for invalid argument count or invalid if message is !wiki help
             if not message.content.count(' ') == 2 or message.content.startswith(f'{PREFIX}wiki help'):
-                await message.channel.send('Usage: !wiki {thoroughness (1-20)} {WikiPedia url}')
+                await message.channel.send('Usage: !wiki {thoroughness (1-10)} {WikiPedia url}')
                 valid = False
 
             # Checking if thoroughness score is a number
             try:
                 q[0] = int(q[0])
             except:
-                await message.channel.send('The thoroughness score must be a number')
-                await message.channel.send('Usage: !wiki {thoroughness (1-20)} {WikiPedia url}')
+                await message.channel.send('The thoroughness score must be a number\n' + 
+                    'Usage: !wiki {thoroughness (1-10)} {WikiPedia url}'
+                )
                 valid = False
             
             # Checking if the URL is valid
@@ -65,7 +72,7 @@ async def on_message(message):
                 try:
                     if re.match(isWikipedia, q[1]):
                         await message.channel.send(
-                            summary(
+                            summaryWikipedia(
                                 q[0], q[1]
                             )
                         )
@@ -80,6 +87,45 @@ async def on_message(message):
                         'There was an error.'
                     )
                     await message.channel.send(e)
+
+        if message.content.startswith(f"{PREFIX}text"):
+            try:
+                q = message.content.split(' ')[1:]
+                valid = True
+                if message.content.startswith(f'{PREFIX}wiki help'): 
+                    await message.channel.send('Usage: !text {thoroughness (1-10)} {Your text here}')
+                elif not len(q) < 3:
+                    await message.channel.send('Usage: !text {thoroughness (1-10)} {Wikipedia article}. This command works best with large texts.\n' + 
+                        'Enter all 3 paratmeters.'
+                    )
+                    valid = False
+                try:
+                    q[0] = int(q[0])
+                except Exception as e:
+                    await message.channel.send('Usage: !text {thoroughness (1-10)} {Wikipedia article}. This command works best with large texts.\n' +
+                        'Enter a number for thoroughness. A default of 3 was chosen.'
+                    )
+                    q[0] = 3
+                    
+                print(q)
+
+                if valid:
+                    print('Running Algorithm')
+                    await message.channel.send(
+                        summary(
+                            q[0], " ".join(q[1:])
+                        )                    
+                    )
+            except Exception as e:
+                print(e)
+            
+
+        if message.content.startswith(f"{PREFIX}spamgyan"):
+            for i in range(30):
+                await message.channel.send("hi gyan")
+
+        if message.content.startswith(f"{PREFIX}spamrathul"):
+            await message.channel.send("no")
     except Exception as e:
         print(e)
 
